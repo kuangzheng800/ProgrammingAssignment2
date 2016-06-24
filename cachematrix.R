@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## makeMatrix functions as a generator of the matrix data structure with cached inverse 
+## inverse function was defined within the structure
 
-## Write a short comment describing this function
+f = makeMatrix(matrix(c(1,3,5,13,17,19,2,2,2),ncol = 3))
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeMatrix = function(x)
+{
+  r = NA;
+  set = function(y)
+  {
+    x <<- y;
+    r <<- NA;
+  }
+  getmatrix = function() x
+  getinverse = function() r
+  setinverse = function() r <<- solve(x)   #defined the inverse function within the making function for integrity purpose
+  list(set = set, matrix = getmatrix,
+       setinverse = setinverse,
+       getinverse  = getinverse)
 }
 
+## cachesolve interogates the inverse of the matrix structure, and cahes the inverse info on the background if such not yet done. 
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cachesolve = function(x)
+{
+  r = x$getinverse()
+  if (!is.na(r))
+  {
+    message("getting cached data")
+    return(r)
+  }
+  
+  x$setinverse()
+  r = x$getinverse()
+  r
 }
+
